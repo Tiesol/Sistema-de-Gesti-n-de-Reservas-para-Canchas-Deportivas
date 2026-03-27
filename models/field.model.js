@@ -9,11 +9,11 @@ module.exports = (sequelize) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            price_per_hour: {
+            pricePerHour: {
                 type: DataTypes.DECIMAL(10, 2),
                 allowNull: false,
             },
-            state: {
+            status: {
                 type: DataTypes.ENUM('available', 'unavailable'),
                 defaultValue: 'available',
             },

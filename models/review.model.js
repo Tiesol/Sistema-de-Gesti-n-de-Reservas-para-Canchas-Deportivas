@@ -2,10 +2,10 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
 
-    const Resenia = sequelize.define(
-        'Resenia', 
+    const Review = sequelize.define(
+        'Review', 
         {
-            calificacion: {
+            rating: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 validate: {
@@ -13,11 +13,11 @@ module.exports = (sequelize) => {
                     max: 5
                 }
             },
-            comentario: {
+            comment: {
                 type: DataTypes.TEXT,
                 allowNull: true
             }
         },
     );
-    return Resenia;
+    return Review;
 }

@@ -2,26 +2,26 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
 
-    const Horario = sequelize.define(
-        'Horario', 
+    const TimeSlot = sequelize.define(
+        'TimeSlot', 
         {
-            fecha: {
+            date: {
                 type: DataTypes.DATEONLY,
                 allowNull: false
             },
-            hora_inicio: {
+            startTime: {
                 type: DataTypes.TIME,
                 allowNull: false
             },
-            hora_fin: {
+            endTime: {
                 type: DataTypes.TIME,
                 allowNull: false
             },
-            disponible: {
+            isAvailable: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true
             }
         },
     );
-    return Horario;
+    return TimeSlot;
 }
