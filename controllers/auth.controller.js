@@ -64,4 +64,20 @@ module.exports = (app, db) => {
             }
         }
     });
-}
+
+    app.get('/client/field', (req, res) => {
+        res.render('client/field-details');
+    });
+
+    app.get('/client/reservation-form', (req, res) => {
+        res.render('client/reservation-form');
+    });
+
+    app.get('/client/my-reservations', (req, res) => {
+        res.render('client/my-reservations');
+    });
+
+    app.get('/client/reservations', (req, res) => {
+        res.render('client/my-reservations');
+    });
+};

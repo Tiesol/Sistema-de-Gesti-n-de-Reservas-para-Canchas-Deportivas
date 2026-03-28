@@ -1,0 +1,44 @@
+﻿<%- include('../components/header.ejs') %>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <h1 class="mb-4">Mis reservas</h1>
+
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <button class="btn btn-primary active">Activas</button>
+                    <button class="btn btn-outline-secondary">Reservas anteriores</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Cancha</th>
+                                        <th>Fecha</th>
+                                        <th>Horario</th>
+                                        <th>Estado</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Fútbol</td>
+                                        <td>02/04/2026</td>
+                                        <td>18:00 - 19:00</td>
+                                        <td><span class="badge bg-success">Confirmada</span></td>
+                                        <td><button class="btn btn-danger btn-sm">Cancelar Reserva</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
