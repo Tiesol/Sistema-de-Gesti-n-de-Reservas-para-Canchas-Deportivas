@@ -1,0 +1,32 @@
+﻿<%- include('../components/header.ejs') %>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <h1 class="mb-4">Formulario de Reserva</h1>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Cancha</label>
+                            <input type="text" class="form-control" value="Cancha deportiva" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha</label>
+                            <input type="text" class="form-control" value="2026-04-02" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Horario</label>
+                            <input type="text" class="form-control" value="18:00 - 19:00" readonly>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="/client/my-reservations" class="btn btn-success">Confirmar reserva</a>
+                            <a href="/client/field" class="btn btn-outline-secondary">Volver a detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
