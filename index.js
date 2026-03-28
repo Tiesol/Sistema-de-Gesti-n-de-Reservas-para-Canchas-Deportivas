@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 require('./controllers')(app, db);
 
 // Para habilitar la BD
