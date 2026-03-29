@@ -21,25 +21,53 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <% if (locals.userlog) { %>
-                        <% if (locals.userlog.role == 'user') { %>
+                <% if (locals.userlog) { %>
+                    <% if (locals.userlog.role === 'user' ) { %>
+                        <ul class="navbar-nav">
+
                             <li class="nav-item">
-                                        <a class="nav-link" href="/clients/home">Home</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/clients/logout">Logout</a>
-                                    </li>
-                            <% } %>
+                                <a class="nav-link" href="/clients/fields">Fields</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/clients/reservations">My Reservations</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/clients/logout">Logout</a>
+                            </li>
+                        </ul>
+                        <% } else if (locals.userlog.role === 'admin' ) { %>
+                            <ul class="navbar-nav">
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/fields">Fields</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/fieldTypes">Type fields</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/admin/reservations">Reservations</a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/clients/logout">Logout</a>
+                                </li>
+                            </ul>
+                            <% }%>
                                 <% } else {%>
-                                    <li class="nav-item">
-                                <a class="nav-link " href="/login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/register">Register</a>
-                            </li>
+                                    <ul class="navbar-nav ms-auto">
+
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="/login">Login</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/register">Register</a>
+                                        </li>
+                                    </ul>
+
                                     <% } %>
-                </ul>
             </div>
 
         </div>

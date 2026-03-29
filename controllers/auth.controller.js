@@ -27,11 +27,16 @@ module.exports = (app, db) => {
             role: user.role,
         };
 
-        return res.redirect('/clients/home');
+        if (user.role === 'admin') {
+            return res.redirect('/admin/fields');
+        } else if (user.role === 'user'){
+            return res.redirect('/clients/fields');
+        }
+    
     });
 
     app.get('/register', (req, res) => {
-        res.render('auth/form-register');
+        res.render('auth/form-register') ;
     });
 
     app.post('/register', async (req, res) => {
@@ -86,27 +91,5 @@ module.exports = (app, db) => {
             console.log(error);
             return res.render('auth/form-register', { error: 'Error al registrar usuario' });
         }
-    });
-
-
-    app.get('/clients/logout', (req, res) => {
-        req.session.destroy();
-        res.redirect('/login');
-    });
-    
-    app.get('/client/field', (req, res) => {
-        res.render('client/field-details');
-    });
-
-    app.get('/client/reservation-form', (req, res) => {
-        res.render('client/reservation-form');
-    });
-
-    app.get('/client/my-reservations', (req, res) => {
-        res.render('client/my-reservations');
-    });
-
-    app.get('/client/reservations', (req, res) => {
-        res.render('client/my-reservations');
     });
 };

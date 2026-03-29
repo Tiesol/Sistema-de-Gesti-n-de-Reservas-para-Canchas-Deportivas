@@ -5,7 +5,12 @@
         <div class="col-12 col-lg-10">
             <div class="card">
                 <div class="card-body p-4">
-                    <h2 class="card-title text-center mb-4 fw-bold">Available Fields</h2>
+                    <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="card-title mb-4 fw-bold">Available Fields</h2>
+                    <% if (locals.userlog.role === 'admin') { %>
+                        <a class="btn btn-success" href="/admin/fields/create">Create new field</a>
+                    <% } %>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped" id="tblFields">
                             <thead class="table-dark">
