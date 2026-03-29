@@ -1,4 +1,15 @@
 module.exports = (app, db) => {
+
+    const isAdmin = (req, res, next) => {
+        if (req.session.userlog && req.session.userlog.role === 'admin') {
+            next();
+        } else {
+            res.redirect('/login'); 
+        }
+    }
+
+    app.use('/admin', isAdmin);
+
     app.get('/admin/fields', async (req, res) => {
         const fields = await db.Field.findAll();
         res.render('fields/list-fields', { fields });
@@ -36,7 +47,7 @@ module.exports = (app, db) => {
                 })
 
             } else {
-                const fieldTypes = db.FieldType.findAll();
+                const fieldTypes = await db.FieldType.findAll();
                 return res.render('admin/list-field-types', { 
                     fieldTypes, 
                     error: 'Ese tipo de cancha ya existe' 
@@ -46,7 +57,7 @@ module.exports = (app, db) => {
             res.redirect('/admin/fieldTypes')
 
         } catch (error) {
-            const fieldTypes = db.FieldType.findAll();
+            const fieldTypes = await db.FieldType.findAll();
             return res.render('admin/list-field-types', { 
                 fieldTypes,
                 error: 'Error al crear el tipo de cancha' 
