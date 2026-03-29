@@ -92,4 +92,9 @@ module.exports = (app, db) => {
             return res.render('auth/form-register', { error: 'Error al registrar usuario' });
         }
     });
+
+    app.get('/logout', (req, res) => {
+        req.session.destroy();
+        res.redirect('/login');
+    });
 };

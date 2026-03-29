@@ -22,7 +22,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <% if (locals.userlog) { %>
-                    <% if (locals.userlog.role === 'user' ) { %>
+                    <% if (locals.userlog.role==='user' ) { %>
                         <ul class="navbar-nav">
 
                             <li class="nav-item">
@@ -32,12 +32,7 @@
                                 <a class="nav-link" href="/clients/reservations">My Reservations</a>
                             </li>
                         </ul>
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/clients/logout">Logout</a>
-                            </li>
-                        </ul>
-                        <% } else if (locals.userlog.role === 'admin' ) { %>
+                        <% } else if (locals.userlog.role==='admin' ) { %>
                             <ul class="navbar-nav">
 
                                 <li class="nav-item">
@@ -50,12 +45,12 @@
                                     <a class="nav-link" href="/admin/reservations">Reservations</a>
                                 </li>
                             </ul>
-                            <ul class="navbar-nav ms-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/clients/logout">Logout</a>
-                                </li>
-                            </ul>
                             <% }%>
+                                <ul class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/logout">Logout</a>
+                                    </li>
+                                </ul>
                                 <% } else {%>
                                     <ul class="navbar-nav ms-auto">
 

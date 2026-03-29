@@ -1,21 +1,5 @@
 module.exports = (app, db) => {
-
-    const isAdmin = (req, res, next) => {
-        if (req.session.userlog && req.session.userlog.role === 'admin') {
-            next();
-        } else {
-            res.redirect('/login'); 
-        }
-    }
-
-    app.use('/admin', isAdmin);
-
-    app.get('/admin/fields', async (req, res) => {
-        const fields = await db.Field.findAll();
-        res.render('fields/list-fields', { fields });
-    });
-
-    app.get('/admin/fieldTypes', async (req, res) => {
+        app.get('/admin/fieldTypes', async (req, res) => {
         const fieldTypes = await db.FieldType.findAll();
         res.render('admin/list-field-types', { fieldTypes });
     });

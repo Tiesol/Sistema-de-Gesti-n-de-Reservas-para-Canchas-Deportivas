@@ -7,11 +7,10 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <h2 class="card-title mb-4 fw-bold">List Field Types</h2>
-                                <button type="button" class="btn btn-success" 
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#createFieldTypeModal">
-                                    Add new field type
-                                </button>
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#createFieldTypeModal">
+                                Add new field type
+                            </button>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped" id="tblFields">
@@ -28,31 +27,41 @@
                                                 <%= fieldType.name %>
                                             </td>
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-4" data-bs-toggle="modal" data-bs-target="#editModal<%= fieldType.id %>">
+                                                <button type="button" class="btn btn-primary btn-sm px-4"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editModal<%= fieldType.id %>">
                                                     Edit
                                                 </button>
-                                                
-                                                <form action="/admin/fieldTypes/<%= fieldType.id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('¿Seguro que deseas eliminar este tipo de cancha?')">
-                                                    <button type="submit" class="btn btn-danger btn-sm px-4">Delete</button>
+
+                                                <form action="/admin/fieldTypes/<%= fieldType.id %>/delete"
+                                                    method="POST" class="d-inline"
+                                                    onsubmit="return confirm('¿Seguro que deseas eliminar este tipo de cancha?')">
+                                                    <button type="submit"
+                                                        class="btn btn-danger btn-sm px-4">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
 
-                                        <div class="modal fade" id="editModal<%= fieldType.id %>" tabindex="-1" aria-hidden="true">
+                                        <div class="modal fade" id="editModal<%= fieldType.id %>" tabindex="-1"
+                                            aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Edit Field Type</h5>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="/admin/fieldTypes/<%= fieldType.id %>/edit" method="POST">
+                                                        <form action="/admin/fieldTypes/<%= fieldType.id %>/edit"
+                                                            method="POST">
                                                             <div class="mb-3 text-start">
                                                                 <label class="form-label">Type Name</label>
-                                                                <input type="text" class="form-control" name="name" value="<%= fieldType.name %>" required>
+                                                                <input type="text" class="form-control" name="name"
+                                                                    value="<%= fieldType.name %>" required>
                                                             </div>
                                                             <div class="d-flex justify-content-end mt-4">
-                                                                <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal">Cancel</button>
-                                                                <button type="submit" class="btn btn-primary">Update</button>
+                                                                <button type="button" class="btn btn-danger me-2"
+                                                                    data-bs-dismiss="modal">Cancel</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Update</button>
                                                             </div>
                                                         </form>
                                                     </div>

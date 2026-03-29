@@ -1,47 +1,64 @@
 <%- include('../components/header.ejs') %>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-10">
-            <div class="card">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="card-title mb-4 fw-bold">Available Fields</h2>
-                    <% if (locals.userlog.role === 'admin') { %>
-                        <a class="btn btn-success" href="/admin/fields/create">Create new field</a>
-                    <% } %>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="tblFields">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Field Name</th>
-                                    <th>Price / Hour</th>
-                                    <th class="text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% fields.forEach(field => { %>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="card-title mb-4 fw-bold">Available Fields</h2>
+                            <% if (locals.userlog.role==='admin' ) { %>
+                                <a class="btn btn-success" href="/admin/fields/create">Create new field</a>
+                                <% } %>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="tblFields">
+                                <thead class="table-dark">
                                     <tr>
-                                        <td>
-                                            <%= field.name %>
-                                        </td>
-                                        <td>Bs. 
-                                            <%= field.pricePerHour %>
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="btn btn-success btn-sm px-4" href="/fields/<%= field.id %>">
-                                                View Details
-                                            </a>
-                                        </td>
+                                        <th>Field Name</th>
+                                        <th>Price / Hour</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
-                                <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    <% fields.forEach(field=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= field.name %>
+                                            </td>
+                                            <td>Bs.
+                                                <%= field.pricePerHour %>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-success btn-sm px-4" href="">
+                                                    View Details
+                                                </a>
+                                                <% if (locals.userlog.role==='admin' ) { %>
+                                                    <a class="btn btn-info btn-sm px-4 text-white"
+                                                        href="/admin/fields/<%= field.id %>/timeslots">
+                                                        TimeSlots
+                                                    </a>
+                                                    <a class="btn btn-primary btn-sm px-4"
+                                                        href="/admin/fields/<%= field.id %>/edit">
+                                                        Edit
+                                                    </a>
+                                                    <form action="/admin/fields/<%= field.id %>/delete" method="POST"
+                                                        class="d-inline"
+                                                        onsubmit="return confirm('¿Seguro que deseas eliminar este tipo de cancha?')">
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm px-4">Delete</button>
+                                                    </form>
+                                                    <% } %>
+                                            </td>
 
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

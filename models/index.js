@@ -4,7 +4,7 @@ const User = require('./user.model')(sequelize);
 const Field = require('./field.model')(sequelize);
 const FieldType = require('./field-type.model')(sequelize);
 const Review = require('./review.model')(sequelize);
-const TimeSlot = require('./times-slot.model')(sequelize);
+const TimeSlot = require('./time-slots.model')(sequelize);
 const Reservation = require('./reservation.model')(sequelize);
 
 //Jairiño aca estan las Relaciones xD
