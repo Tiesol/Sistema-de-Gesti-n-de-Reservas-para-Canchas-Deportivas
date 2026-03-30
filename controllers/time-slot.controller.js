@@ -1,4 +1,14 @@
 module.exports = (app, db) => {
+    const { Op } = require('sequelize');
+
+    const timeToMinutes = (t) => {
+        if (!t) return NaN;
+        const parts = String(t).split(':');
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        if (Number.isNaN(h) || Number.isNaN(m)) return NaN;
+        return h * 60 + m;
+    };
 
     app.get('/admin/fields/:fieldId/timeslots', async (req, res) => {
         const { fieldId } = req.params;
@@ -28,6 +38,28 @@ module.exports = (app, db) => {
 
         try {
             if (date && startTime && endTime) {
+                const startMinutes = timeToMinutes(startTime);
+                const endMinutes = timeToMinutes(endTime);
+                if (Number.isNaN(startMinutes) || Number.isNaN(endMinutes) || endMinutes <= startMinutes) {
+                    return res.redirect(`/admin/fields/${fieldId}/timeslots`);
+                }
+
+             
+                const conflict = await db.TimeSlot.findOne({
+                    where: {
+                        fieldId: parseInt(fieldId),
+                        date,
+                        [Op.and]: [
+                            { startTime: { [Op.lt]: endTime } },
+                            { endTime: { [Op.gt]: startTime } }
+                        ]
+                    }
+                });
+
+                if (conflict) {
+                    return res.redirect(`/admin/fields/${fieldId}/timeslots`);
+                }
+
                 await db.TimeSlot.create({
                     date: date,
                     startTime: startTime,
@@ -49,6 +81,29 @@ module.exports = (app, db) => {
         try {
             const timeSlot = await db.TimeSlot.findByPk(id);
             if (timeSlot && date && startTime && endTime) {
+                const startMinutes = timeToMinutes(startTime);
+                const endMinutes = timeToMinutes(endTime);
+                if (Number.isNaN(startMinutes) || Number.isNaN(endMinutes) || endMinutes <= startMinutes) {
+                    return res.redirect(`/admin/fields/${fieldId}/timeslots`);
+                }
+
+               
+                const conflict = await db.TimeSlot.findOne({
+                    where: {
+                        fieldId: parseInt(fieldId),
+                        date,
+                        id: { [Op.ne]: id },
+                        [Op.and]: [
+                            { startTime: { [Op.lt]: endTime } },
+                            { endTime: { [Op.gt]: startTime } }
+                        ]
+                    }
+                });
+
+                if (conflict) {
+                    return res.redirect(`/admin/fields/${fieldId}/timeslots`);
+                }
+
                 timeSlot.date = date;
                 timeSlot.startTime = startTime;
                 timeSlot.endTime = endTime;

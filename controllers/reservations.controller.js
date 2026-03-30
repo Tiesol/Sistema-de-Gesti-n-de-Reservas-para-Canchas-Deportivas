@@ -1,4 +1,5 @@
 module.exports = (app, db) => {
+    const { Op } = require('sequelize');
 
     app.get('/clients/fields/:fieldId/reserve/:timeSlotId', async (req, res) => {
         const { fieldId, timeSlotId } = req.params;
@@ -40,6 +41,31 @@ module.exports = (app, db) => {
             });
 
             if (!timeSlot) {
+                return res.redirect(`/clients/fields/${fieldId}`);
+            }
+
+            // mira tieso esto es para evitar que el mimsmo cliente reserve la misma cancha a la misma hora
+            const conflictReservation = await db.Reservation.findOne({
+                where: {
+                    status: 'confirmed'
+                },
+                include: [{
+                    model: db.TimeSlot,
+                    as: 'timeSlot',
+                    required: true,
+                    where: {
+                        fieldId: parseInt(fieldId),
+                        date: timeSlot.date,
+                        id: { [Op.ne]: timeSlot.id },
+                        [Op.and]: [
+                            { startTime: { [Op.lt]: timeSlot.endTime } },
+                            { endTime: { [Op.gt]: timeSlot.startTime } }
+                        ]
+                    }
+                }]
+            });
+
+            if (conflictReservation) {
                 return res.redirect(`/clients/fields/${fieldId}`);
             }
 
