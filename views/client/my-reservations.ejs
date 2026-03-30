@@ -5,11 +5,6 @@
             <div class="col-12 col-lg-10">
                 <h1 class="mb-4">Mis reservas</h1>
 
-                <div class="d-flex flex-wrap gap-2 mb-4">
-                    <button class="btn btn-primary active">Activas</button>
-                    <button class="btn btn-outline-secondary">Reservas anteriores</button>
-                </div>
-
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -24,13 +19,37 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Fútbol</td>
-                                        <td>02/04/2026</td>
-                                        <td>18:00 - 19:00</td>
-                                        <td><span class="badge bg-success">Confirmada</span></td>
-                                        <td><button class="btn btn-danger btn-sm">Cancelar Reserva</button></td>
-                                    </tr>
+                                    <% if (!reservations || reservations.length === 0) { %>
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">No tienes reservas aún.</td>
+                                        </tr>
+                                    <% } else { %>
+                                        <% reservations.forEach(reservation => { %>
+                                            <tr>
+                                                <td><%= reservation.timeSlot && reservation.timeSlot.field ? reservation.timeSlot.field.name : 'Sin cancha' %></td>
+                                                <td><%= reservation.timeSlot ? reservation.timeSlot.date : '-' %></td>
+                                                <td><%= reservation.timeSlot ? reservation.timeSlot.startTime + ' - ' + reservation.timeSlot.endTime : '-' %></td>
+                                                <td>
+                                                    <% if (reservation.status === 'confirmed') { %>
+                                                        <span class="badge bg-success">Confirmada</span>
+                                                    <% } else if (reservation.status === 'cancelled') { %>
+                                                        <span class="badge bg-secondary">Cancelada</span>
+                                                    <% } else { %>
+                                                        <span class="badge bg-info"><%= reservation.status %></span>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <% if (reservation.status === 'confirmed') { %>
+                                                        <form action="/clients/reservations/<%= reservation.id %>/cancel" method="POST" class="d-inline" onsubmit="return confirm('¿Seguro que deseas cancelar esta reserva?')">
+                                                            <button type="submit" class="btn btn-danger btn-sm">Cancelar Reserva</button>
+                                                        </form>
+                                                    <% } else { %>
+                                                        <span class="text-muted">-</span>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } %>
                                 </tbody>
                             </table>
                         </div>
@@ -39,6 +58,5 @@
             </div>
         </div>
     </div>
-
 </body>
 </html>

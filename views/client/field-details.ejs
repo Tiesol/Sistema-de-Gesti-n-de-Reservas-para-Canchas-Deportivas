@@ -7,68 +7,42 @@
 
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h2 class="h5 mb-3">Futbol</h2>
+                        <h2 class="h5 mb-3"><%= field.name %></h2>
+                        <p class="mb-1"><strong>Tipo:</strong> <%= field.fieldType ? field.fieldType.name : 'Sin tipo' %></p>
+                        <p class="mb-1"><strong>Precio:</strong> Bs. <%= field.pricePerHour %></p>
+                        <p class="mb-1"><strong>Estado:</strong> <%= field.status === 'available' ? 'Activa' : 'Inactiva' %></p>
                     </div>
                 </div>
 
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h2 class="h5 mb-3">Calendario</h2>
-                        <div class="row">
-                            <div class="col-12 col-md-6 mb-3">
-                                <label class="form-label" for="date">Fecha</label>
-                                <input id="date" type="date" class="form-control" value="2026-04-02">
+                        <h2 class="h5 mb-3">Horarios disponibles</h2>
+                        <% if (!timeSlots || timeSlots.length === 0) { %>
+                            <div class="alert alert-secondary">No hay horarios disponibles para esta cancha.</div>
+                        <% } else { %>
+                            <div class="list-group">
+                                <% timeSlots.forEach(timeslot => { %>
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong><%= timeslot.date %> · <%= timeslot.startTime %> - <%= timeslot.endTime %></strong>
+                                            <div class="text-muted">Disponible</div>
+                                        </div>
+                                        <a href="/clients/fields/<%= field.id %>/reserve/<%= timeslot.id %>" class="btn btn-primary">Reservar</a>
+                                    </div>
+                                <% }) %>
                             </div>
-                           
-                        </div>
-                        <p class="text-muted mb-0">tiesitooooollll</p>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h2 class="h5 mb-3">Horarios</h2>
-                        <div class="list-group">
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>18:00 - 19:00</strong>
-                                    <div class="text-muted">Disponible</div>
-                                </div>
-                                <a href="/client/reservation-form" class="btn btn-primary">Reservar</a>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>19:00 - 20:00</strong>
-                                    <div class="text-muted">Disponible</div>
-                                </div>
-                                <a href="/client/reservation-form" class="btn btn-primary">Reservar</a>
-                            </div>
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>20:00 - 21:00</strong>
-                                    <div class="text-muted">Disponible</div>
-                                </div>
-                                <a href="/client/reservation-form" class="btn btn-primary">Reservar</a>
-                            </div>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
 
                 <div class="card mb-4">
                     <div class="card-body">
                         <h2 class="h5 mb-3">Reseñas</h2>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h3 class="h6">Jairo</h3>
-                                <p class="mb-1"><strong>Calificación:</strong> 5 / 5</p>
-                                <p>La cancha estaba en muy buen estado y el horario se cumplió perfecto.</p>
-                            </div>
-                        </div>
+                        <p class="text-muted">Aún no hay reseñas disponibles.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>

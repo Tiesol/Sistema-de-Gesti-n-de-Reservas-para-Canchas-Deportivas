@@ -3,30 +3,34 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-6">
-                <h1 class="mb-4">Formulario de Reserva</h1>
+                <h1 class="mb-4">Confirmar reserva</h1>
                 <div class="card">
                     <div class="card-body">
+                        <% if (typeof error !== 'undefined' && error) { %>
+                            <div class="alert alert-danger"><%= error %></div>
+                        <% } %>
                         <div class="mb-3">
                             <label class="form-label">Cancha</label>
-                            <input type="text" class="form-control" value="Cancha deportiva" readonly>
+                            <input type="text" class="form-control" value="<%= field.name %>" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Fecha</label>
-                            <input type="text" class="form-control" value="2026-04-02" readonly>
+                            <input type="text" class="form-control" value="<%= timeSlot.date %>" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Horario</label>
-                            <input type="text" class="form-control" value="18:00 - 19:00" readonly>
+                            <input type="text" class="form-control" value="<%= timeSlot.startTime %> - <%= timeSlot.endTime %>" readonly>
                         </div>
-                        <div class="d-grid gap-2">
-                            <a href="/client/my-reservations" class="btn btn-success">Confirmar reserva</a>
-                            <a href="/client/field" class="btn btn-outline-secondary">Volver a detalles</a>
-                        </div>
+                        <form action="/clients/fields/<%= field.id %>/reserve/<%= timeSlot.id %>" method="POST">
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success">Confirmar reserva</button>
+                                <a href="/clients/fields/<%= field.id %>" class="btn btn-outline-secondary">Volver a detalles</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>

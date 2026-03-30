@@ -38,12 +38,11 @@ module.exports = (app, db) => {
         } catch (error) {
             console.log("Error al crear cancha:", error);
             const fieldTypes = await db.FieldType.findAll();
-            return
-                res.render('admin/form-field', {
-                    fieldTypes,
-                    field: null,
-                    error: 'Error al crear la cancha'
-                });
+            return res.render('admin/form-field', {
+                fieldTypes,
+                field: null,
+                error: 'Error al crear la cancha'
+            });
         }
     });
 

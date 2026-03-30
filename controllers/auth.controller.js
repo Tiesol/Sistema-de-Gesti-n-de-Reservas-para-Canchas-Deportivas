@@ -3,7 +3,7 @@ module.exports = (app, db) => {
     const bcrypt = require('bcrypt');
 
     app.get('/login', (req, res) => {
-        res.render('auth/form-login');
+        res.render('auth/form-login', { values: {} });
     });
 
     app.post('/login', async (req, res) => {
@@ -14,11 +14,11 @@ module.exports = (app, db) => {
             }
         });
         if (!user) {
-            return res.render('auth/form-login', { error: 'Usuario no encontrado' });
+            return res.render('auth/form-login', { error: 'Usuario no encontrado', values: { email } });
         }
-        const validPassword = await bcrypt.compare(password, user.password);
+        const validPassword = await bcrypt.compare(password || '', user.password);
         if (!validPassword) {
-            return res.render('auth/form-login', { error: 'Contraseña incorrecta' });
+            return res.render('auth/form-login', { error: 'Contraseña incorrecta', values: { email } });
         }
 
         req.session.userlog = {
@@ -36,7 +36,7 @@ module.exports = (app, db) => {
     });
 
     app.get('/register', (req, res) => {
-        res.render('auth/form-register') ;
+        res.render('auth/form-register', { values: {} });
     });
 
     app.post('/register', async (req, res) => {
@@ -49,11 +49,11 @@ module.exports = (app, db) => {
             password = password ? password.trim() : '';
 
             if (!name || !email || !password) {
-                return res.render('auth/form-register', { error: 'Todos los campos son obligatorios' });
+                return res.render('auth/form-register', { error: 'Todos los campos son obligatorios', values: { name, email } });
             }
 
             if (name.length <= 3) {
-                return res.render('auth/form-register', { error: 'El nombre debe tener al menos 3 caracteres' });
+                return res.render('auth/form-register', { error: 'El nombre debe tener al menos 3 caracteres', values: { name, email } });
             }
 
             const validEmail = email.match(
@@ -61,11 +61,11 @@ module.exports = (app, db) => {
             );
 
             if (!validEmail) {
-                return res.render('auth/form-register', { error: 'El correo no es válido' });
+                return res.render('auth/form-register', { error: 'El correo no es válido', values: { name, email } });
             }
 
             if (password.length < 6) {
-                return res.render('auth/form-register', { error: 'La contraseña debe tener al menos 6 caracteres' });
+                return res.render('auth/form-register', { error: 'La contraseña debe tener al menos 6 caracteres', values: { name, email } });
             }
 
             const existingUser = await db.User.findOne({
@@ -75,7 +75,7 @@ module.exports = (app, db) => {
             });
 
             if (existingUser) {
-                return res.render('auth/form-register', { error: 'El correo ya está registrado' });
+                return res.render('auth/form-register', { error: 'El correo ya está registrado', values: { name, email } });
             }
 
             const hashedpassword = await bcrypt.hash(password, 10);
@@ -89,7 +89,7 @@ module.exports = (app, db) => {
             return res.redirect('/login');
         } catch (error) {
             console.log(error);
-            return res.render('auth/form-register', { error: 'Error al registrar usuario' });
+            return res.render('auth/form-register', { error: 'Error al registrar usuario', values: { name, email } });
         }
     });
 
