@@ -156,3 +156,15 @@
             </div>
         </div>
     </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+        <div id="timeslotOverlapMsg" style="display:none"><%= error %></div>
+        <script>
+            (function () {
+                var n = document.getElementById('timeslotOverlapMsg');
+                if (n) {
+                    alert(n.textContent);
+                }
+            })();
+        </script>
+    <% } %>

@@ -25,7 +25,12 @@ module.exports = (app, db) => {
                 ]
             });
 
-            res.render('admin/list-timeslots', { field, timeSlots });
+            let error = null;
+            if (req.query.overlap === '1') {
+                error = 'opa ya existe ese horario en esta cancha';
+            }
+
+            res.render('admin/list-timeslots', { field, timeSlots, error });
         } catch (error) {
             console.log("Error cargando horarios:", error);
             res.redirect('/admin/fields');
@@ -57,7 +62,7 @@ module.exports = (app, db) => {
                 });
 
                 if (conflict) {
-                    return res.redirect(`/admin/fields/${fieldId}/timeslots`);
+                    return res.redirect(`/admin/fields/${fieldId}/timeslots?overlap=1`);
                 }
 
                 await db.TimeSlot.create({
@@ -101,7 +106,7 @@ module.exports = (app, db) => {
                 });
 
                 if (conflict) {
-                    return res.redirect(`/admin/fields/${fieldId}/timeslots`);
+                    return res.redirect(`/admin/fields/${fieldId}/timeslots?overlap=1`);
                 }
 
                 timeSlot.date = date;
