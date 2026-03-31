@@ -1,4 +1,4 @@
-﻿<%- include('../components/header.ejs') %>
+<%- include('../components/header.ejs') %>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -34,6 +34,8 @@
                                                         <span class="badge bg-success">Confirmada</span>
                                                     <% } else if (reservation.status === 'cancelled') { %>
                                                         <span class="badge bg-secondary">Cancelada</span>
+                                                    <% } else if (reservation.status === 'completed') { %>
+                                                        <span class="badge bg-info">Completada</span>
                                                     <% } else { %>
                                                         <span class="badge bg-info"><%= reservation.status %></span>
                                                     <% } %>

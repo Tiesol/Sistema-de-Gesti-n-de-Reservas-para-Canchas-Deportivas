@@ -23,6 +23,7 @@ module.exports = (app, db) => {
 
     require('./client.controller')(app, db);
     require('./reservations.controller')(app, db);
+    require('./admin-reservations.controller')(app, db);
     require('./field.controller')(app, db);
     require('./field-type.controller')(app, db);
     require('./time-slot.controller')(app, db);
