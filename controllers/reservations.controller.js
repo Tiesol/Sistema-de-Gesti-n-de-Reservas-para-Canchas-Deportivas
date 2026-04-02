@@ -1,7 +1,5 @@
 module.exports = (app, db) => {
 
-    const { Op } = require('sequelize');
-
     const marcarCompletadas = async () => {
         try {
             const ahora = new Date();
@@ -73,30 +71,6 @@ module.exports = (app, db) => {
                 return res.redirect(`/clients/fields/${fieldId}`);
             }
 
-            const conflictReservation = await db.Reservation.findOne({
-                where: {
-                    status: 'confirmed'
-                },
-                include: [{
-                    model: db.TimeSlot,
-                    as: 'timeSlot',
-                    required: true,
-                    where: {
-                        fieldId: Number(fieldId),
-                        date: timeSlot.date,
-                        id: { [Op.ne]: timeSlot.id },
-                        [Op.and]: [
-                            { startTime: { [Op.lt]: timeSlot.endTime } },
-                            { endTime: { [Op.gt]: timeSlot.startTime } }
-                        ]
-                    }
-                }]
-            });
-
-            if (conflictReservation) {
-                return res.redirect(`/clients/fields/${fieldId}`);
-            }
-
             await db.Reservation.create({
                 userId,
                 timeSlotId: timeSlot.id,
@@ -107,6 +81,7 @@ module.exports = (app, db) => {
             await timeSlot.save();
 
             res.redirect('/clients/reservations');
+
         } catch (error) {
             console.log('Error creando reserva:', error);
             res.redirect(`/clients/fields/${fieldId}`);
@@ -121,11 +96,14 @@ module.exports = (app, db) => {
 
             const reservations = await db.Reservation.findAll({
                 where: { userId },
-                include: [{
-                    model: db.TimeSlot,
-                    as: 'timeSlot',
-                    include: [{ model: db.Field, as: 'field', include: [{ model: db.FieldType, as: 'fieldType' }] }]
-                }],
+                include: [
+                    { model: db.Review, as: 'review' }, 
+                    {
+                        model: db.TimeSlot,
+                        as: 'timeSlot',
+                        include: [{ model: db.Field, as: 'field', include: [{ model: db.FieldType, as: 'fieldType' }] }]
+                    }
+                ],
                 order: [['createdAt', 'DESC']]
             });
 

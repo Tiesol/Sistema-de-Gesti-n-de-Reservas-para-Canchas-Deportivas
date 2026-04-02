@@ -3,12 +3,11 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-6">
-                <div class="card shadow-sm">
+                <div class="card">
                     <div class="card-body p-4">
                         <h2 class="card-title mb-4 fw-bold">
                             <%= field ? 'Editar Cancha' : 'Crear Nueva Cancha' %>
                         </h2>
-
                         <% if (typeof error !=='undefined' && error) { %>
                             <div class="alert alert-danger">
                                 <%= error %>

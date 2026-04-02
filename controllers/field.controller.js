@@ -116,4 +116,29 @@ module.exports = (app, db) => {
         }
     });
 
+    app.get('/admin/fields/:id/reviews', async (req, res) => {
+        const { id } = req.params;
+        try {
+            const field = await db.Field.findByPk(id, {
+                include: [
+                    { 
+                        model: db.Review, 
+                        as: 'reviews', 
+                        include: [{ model: db.User, as: 'user', attributes: ['name'] }] 
+                    }
+                ],
+                order: [[{ model: db.Review, as: 'reviews' }, 'createdAt', 'DESC']] // Las más nuevas primero
+            });
+
+            if (!field) {
+                return res.redirect('/admin/fields');
+            }
+
+            res.render('admin/field-reviews', { field, reviews: field.reviews || [] });
+        } catch (error) {
+            console.log("Error cargando reseñas de la cancha:", error);
+            res.redirect('/admin/fields');
+        }
+    });
+
 }

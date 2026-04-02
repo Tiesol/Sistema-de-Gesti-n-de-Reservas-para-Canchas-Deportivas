@@ -1,10 +1,9 @@
-<%- include('../components/header.ejs') %>
+﻿<%- include('../components/header.ejs') %>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-10">
                 <h1 class="mb-4">Mis reservas</h1>
-
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -19,39 +18,163 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% if (!reservations || reservations.length === 0) { %>
+                                    <% if (!reservations || reservations.length===0) { %>
                                         <tr>
-                                            <td colspan="5" class="text-center py-4 text-muted">No tienes reservas aún.</td>
+                                            <td colspan="5" class="text-center py-4 text-muted">No tienes reservas aún.
+                                            </td>
                                         </tr>
-                                    <% } else { %>
-                                        <% reservations.forEach(reservation => { %>
-                                            <tr>
-                                                <td><%= reservation.timeSlot && reservation.timeSlot.field ? reservation.timeSlot.field.name : 'Sin cancha' %></td>
-                                                <td><%= reservation.timeSlot ? reservation.timeSlot.date : '-' %></td>
-                                                <td><%= reservation.timeSlot ? reservation.timeSlot.startTime + ' - ' + reservation.timeSlot.endTime : '-' %></td>
-                                                <td>
-                                                    <% if (reservation.status === 'confirmed') { %>
-                                                        <span class="badge bg-success">Confirmada</span>
-                                                    <% } else if (reservation.status === 'cancelled') { %>
-                                                        <span class="badge bg-secondary">Cancelada</span>
-                                                    <% } else if (reservation.status === 'completed') { %>
-                                                        <span class="badge bg-info">Completada</span>
-                                                    <% } else { %>
-                                                        <span class="badge bg-info"><%= reservation.status %></span>
+                                        <% } else { %>
+                                            <% reservations.forEach(reservation=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= reservation.timeSlot && reservation.timeSlot.field ?
+                                                            reservation.timeSlot.field.name : 'Sin cancha' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= reservation.timeSlot ? reservation.timeSlot.date : '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= reservation.timeSlot ? reservation.timeSlot.startTime
+                                                            + ' - ' + reservation.timeSlot.endTime : '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (reservation.status==='confirmed' ) { %>
+                                                            <span class="badge bg-success">Confirmada</span>
+                                                            <% } else if (reservation.status==='cancelled' ) { %>
+                                                                <span class="badge bg-secondary">Cancelada</span>
+                                                                <% } else if (reservation.status==='completed' ) { %>
+                                                                    <span class="badge bg-info">Completada</span>
+                                                                    <% } else { %>
+                                                                        <span class="badge bg-info">
+                                                                            <%= reservation.status %>
+                                                                        </span>
+                                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (reservation.status==='confirmed' ) { %>
+                                                            <form
+                                                                action="/clients/reservations/<%= reservation.id %>/cancel"
+                                                                method="POST" class="d-inline"
+                                                                onsubmit="return confirm('¿Seguro que deseas cancelar esta reserva?')">
+                                                                <button type="submit"
+                                                                    class="btn btn-danger btn-sm">Cancelar
+                                                                    Reserva</button>
+                                                            </form>
+                                                            <% } else if (reservation.status==='completed' ) { %>
+                                                                <% if (reservation.review) { %>
+                                                                    <span class="text-success small fw-bold">
+                                                                        calificado
+                                                                    </span>
+                                                                    <% } else { %>
+                                                                        <button type="button"
+                                                                            class="btn btn-warning btn-sm"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#reviewModal<%= reservation.id %>">
+                                                                            Dejar Reseña
+                                                                        </button>
+                                                                        <% } %>
+                                                                            <% } else { %>
+                                                                                <span class="text-muted">-</span>
+                                                                                <% } %>
+                                                    </td>
+                                                </tr>
+                                                <div class="modal fade" id="reviewModal<%= reservation.id %>"
+                                                    tabindex="-1"
+                                                    aria-labelledby="reviewModalLabel<%= reservation.id %>"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+
+                                                            <form
+                                                                action="/clients/reservations/<%= reservation.id %>/review"
+                                                                method="POST">
+
+                                                                <div class="modal-header bg-primary text-white">
+                                                                    <h5 class="modal-title"
+                                                                        id="reviewModalLabel<%= reservation.id %>">
+                                                                        Calificar Cancha</h5>
+                                                                    <button type="button"
+                                                                        class="btn-close btn-close-white"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+
+                                                                <div class="modal-body text-start">
+                                                                    <p class="mb-3">¿Qué te pareció la cancha <strong>
+                                                                            <%= reservation.timeSlot.field.name %>
+                                                                        </strong>?</p>
+
+                                                                    <div class="mb-1">
+                                                                        <label
+                                                                            class="form-label fw-bold d-block">Calificación
+                                                                            <span class="text-danger">*</span></label>
+                                                                        <div class="btn-group w-100" role="group"
+                                                                            aria-label="Calificación del 1 al 5">
+                                                                            <input type="radio" class="btn-check"
+                                                                                name="rating"
+                                                                                id="rate1_<%= reservation.id %>"
+                                                                                value="1" required>
+                                                                            <label class="btn btn-outline-primary"
+                                                                                for="rate1_<%= reservation.id %>">1</label>
+
+                                                                            <input type="radio" class="btn-check"
+                                                                                name="rating"
+                                                                                id="rate2_<%= reservation.id %>"
+                                                                                value="2">
+                                                                            <label class="btn btn-outline-primary"
+                                                                                for="rate2_<%= reservation.id %>">2</label>
+
+                                                                            <input type="radio" class="btn-check"
+                                                                                name="rating"
+                                                                                id="rate3_<%= reservation.id %>"
+                                                                                value="3">
+                                                                            <label class="btn btn-outline-primary"
+                                                                                for="rate3_<%= reservation.id %>">3</label>
+
+                                                                            <input type="radio" class="btn-check"
+                                                                                name="rating"
+                                                                                id="rate4_<%= reservation.id %>"
+                                                                                value="4">
+                                                                            <label class="btn btn-outline-primary"
+                                                                                for="rate4_<%= reservation.id %>">4</label>
+
+                                                                            <input type="radio" class="btn-check"
+                                                                                name="rating"
+                                                                                id="rate5_<%= reservation.id %>"
+                                                                                value="5">
+                                                                            <label class="btn btn-outline-primary"
+                                                                                for="rate5_<%= reservation.id %>">5</label>
+                                                                        </div>
+                                                                        <div
+                                                                            class="d-flex justify-content-between text-muted small mt-1 mb-3">
+                                                                            <span>Mala</span>
+                                                                            <span>Excelente</span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="mb-3">
+                                                                        <label for="comment"
+                                                                            class="form-label fw-bold">Comentario
+                                                                            (Opcional)</label>
+                                                                        <textarea name="comment" class="form-control"
+                                                                            rows="3"
+                                                                            placeholder="Deja tu opinión sobre el estado de la cancha..."></textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Cancelar</button>
+                                                                    <button type="submit" class="btn btn-primary">Enviar
+                                                                        Reseña</button>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
                                                     <% } %>
-                                                </td>
-                                                <td>
-                                                    <% if (reservation.status === 'confirmed') { %>
-                                                        <form action="/clients/reservations/<%= reservation.id %>/cancel" method="POST" class="d-inline" onsubmit="return confirm('¿Seguro que deseas cancelar esta reserva?')">
-                                                            <button type="submit" class="btn btn-danger btn-sm">Cancelar Reserva</button>
-                                                        </form>
-                                                    <% } else { %>
-                                                        <span class="text-muted">-</span>
-                                                    <% } %>
-                                                </td>
-                                            </tr>
-                                        <% }) %>
-                                    <% } %>
                                 </tbody>
                             </table>
                         </div>
@@ -60,5 +183,6 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+    </body>
+
+    </html>

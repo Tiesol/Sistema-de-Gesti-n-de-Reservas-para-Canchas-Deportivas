@@ -7,65 +7,68 @@ const Review = require('./review.model')(sequelize);
 const TimeSlot = require('./time-slots.model')(sequelize);
 const Reservation = require('./reservation.model')(sequelize);
 
-//Jairiño aca estan las Relaciones xD
-
-//Un tipo de cancha tiene muchas canchas, y una cancha pertenece a un solo tipo.
-FieldType.hasMany(Field, { 
+FieldType.hasMany(Field, {
     foreignKey: 'fieldTypeId',
     as: 'fields'
 });
-Field.belongsTo(FieldType, { 
+Field.belongsTo(FieldType, {
     foreignKey: 'fieldTypeId',
     as: 'fieldType'
 });
 
-// Una cancha tiene un chingo de horarios y también muchas reseñas.
-Field.hasMany(TimeSlot, { 
+Field.hasMany(TimeSlot, {
     foreignKey: 'fieldId',
     as: 'timeSlots'
 });
-TimeSlot.belongsTo(Field, { 
+TimeSlot.belongsTo(Field, {
     foreignKey: 'fieldId',
     as: 'field'
 });
 
-Field.hasMany(Review, { 
+Field.hasMany(Review, {
     foreignKey: 'fieldId',
     as: 'reviews'
 });
-Review.belongsTo(Field, { 
+Review.belongsTo(Field, {
     foreignKey: 'fieldId',
     as: 'field'
 });
 
-// Un usuario puede tener muchas reservas, y también puede dejar un montón de reseñas xd.
-User.hasMany(Reservation, { 
+User.hasMany(Reservation, {
     foreignKey: 'userId',
     as: 'reservations'
 });
-Reservation.belongsTo(User, { 
+Reservation.belongsTo(User, {
     foreignKey: 'userId',
     as: 'user'
 });
 
-User.hasMany(Review, { 
+User.hasMany(Review, {
     foreignKey: 'userId',
     as: 'reviews'
 });
-Review.belongsTo(User, { 
+Review.belongsTo(User, {
     foreignKey: 'userId',
     as: 'user'
 });
 
-//Ni siquiera yo se como explicarte esto xD, estuve pensando como explicalo pero no se xD
-//Confio en vos para entenderlo xd
-TimeSlot.hasMany(Reservation, { 
+TimeSlot.hasMany(Reservation, {
     foreignKey: 'timeSlotId',
     as: 'reservations'
 });
-Reservation.belongsTo(TimeSlot, { 
+Reservation.belongsTo(TimeSlot, {
     foreignKey: 'timeSlotId',
     as: 'timeSlot'
+});
+
+Reservation.hasOne(Review, { 
+    foreignKey: 'reservationId', 
+    as: 'review' 
+});
+
+Review.belongsTo(Reservation, { 
+    foreignKey: 'reservationId', 
+    as: 'reservation' 
 });
 
 module.exports = {

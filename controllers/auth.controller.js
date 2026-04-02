@@ -23,7 +23,6 @@ module.exports = (app, db) => {
 
         req.session.userlog = {
             id : user.id,
-            name: user.name,
             role: user.role,
         };
 

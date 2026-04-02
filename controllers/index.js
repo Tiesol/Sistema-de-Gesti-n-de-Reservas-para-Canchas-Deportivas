@@ -27,4 +27,5 @@ module.exports = (app, db) => {
     require('./field.controller')(app, db);
     require('./field-type.controller')(app, db);
     require('./time-slot.controller')(app, db);
+    require('./review.controller')(app, db);
 }

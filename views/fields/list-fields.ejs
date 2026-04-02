@@ -30,27 +30,32 @@
                                                 <%= field.pricePerHour %>
                                             </td>
                                             <td class="text-center">
-                                            <% if (locals.userlog.role === 'user') { %>
-                                                <a class="btn btn-success btn-sm px-4" href="/clients/fields/<%= field.id %>">
-                                                    View Details
-                                                </a>
-                                            <% } %>
-                                            <% if (locals.userlog.role === 'admin') { %>
-                                                <a class="btn btn-info btn-sm px-4 text-white"
-                                                    href="/admin/fields/<%= field.id %>/timeslots">
-                                                    TimeSlots
-                                                </a>
-                                                <a class="btn btn-primary btn-sm px-4"
-                                                    href="/admin/fields/<%= field.id %>/edit">
-                                                    Edit
-                                                </a>
-                                                <form action="/admin/fields/<%= field.id %>/delete" method="POST"
-                                                    class="d-inline"
-                                                    onsubmit="return confirm('¿Seguro que deseas eliminar este tipo de cancha?')">
-                                                    <button type="submit"
-                                                        class="btn btn-danger btn-sm px-4">Delete</button>
-                                                </form>
-                                            <% } %>
+                                                <% if (locals.userlog.role==='user' ) { %>
+                                                    <a class="btn btn-success btn-sm px-4"
+                                                        href="/clients/fields/<%= field.id %>">
+                                                        View Details
+                                                    </a>
+                                                    <% } %>
+                                                        <% if (locals.userlog.role==='admin' ) { %>
+                                                            <a class="btn btn-info btn-sm px-4 text-white"
+                                                                href="/admin/fields/<%= field.id %>/timeslots">
+                                                                TimeSlots
+                                                            </a>
+                                                            <a class="btn btn-primary btn-sm px-4"
+                                                                href="/admin/fields/<%= field.id %>/edit">
+                                                                Edit
+                                                            </a>
+                                                            <form action="/admin/fields/<%= field.id %>/delete"
+                                                                method="POST" class="d-inline"
+                                                                onsubmit="return confirm('¿Seguro que deseas eliminar este tipo de cancha?')">
+                                                                <button type="submit"
+                                                                    class="btn btn-danger btn-sm px-4">Delete</button>
+                                                            </form>
+                                                            <a href="/admin/fields/<%= field.id %>/reviews"
+                                                                class="btn btn-warning btn-sm text-white"
+                                                                Reseñas
+                                                            </a>
+                                                            <% } %>
 
                                         </tr>
                                         <% }) %>

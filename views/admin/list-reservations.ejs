@@ -28,51 +28,64 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% if (!reservations || reservations.length === 0) { %>
+                                    <% if (!reservations || reservations.length===0) { %>
                                         <tr>
                                             <td colspan="6" class="text-center py-4 text-muted">
                                                 No hay reservas todavía.
                                             </td>
                                         </tr>
-                                    <% } else { %>
-                                        <% reservations.forEach(reservation => { %>
-                                            <tr>
-                                                <td>
-                                                    <%= reservation.user ? reservation.user.name : '-' %>
-                                                </td>
-                                                <td>
-                                                    <%= reservation.timeSlot && reservation.timeSlot.field ? reservation.timeSlot.field.name : '-' %>
-                                                </td>
-                                                <td>
-                                                    <%= reservation.timeSlot ? reservation.timeSlot.date : '-' %>
-                                                </td>
-                                                <td>
-                                                    <%= reservation.timeSlot ? (reservation.timeSlot.startTime + ' - ' + reservation.timeSlot.endTime) : '-' %>
-                                                </td>
-                                                <td>
-                                                    <% if (reservation.status === 'confirmed') { %>
-                                                        <span class="badge bg-success">Confirmada</span>
-                                                    <% } else if (reservation.status === 'cancelled') { %>
-                                                        <span class="badge bg-secondary">Cancelada</span>
-                                                    <% } else if (reservation.status === 'completed') { %>
-                                                        <span class="badge bg-info">Completada</span>
-                                                    <% } else { %>
-                                                        <span class="badge bg-info"><%= reservation.status %></span>
+                                        <% } else { %>
+                                            <% reservations.forEach(reservation=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= reservation.user ? reservation.user.name : '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= reservation.timeSlot && reservation.timeSlot.field ?
+                                                            reservation.timeSlot.field.name : '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= reservation.timeSlot ? reservation.timeSlot.date : '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= reservation.timeSlot ? (reservation.timeSlot.startTime
+                                                            + ' - ' + reservation.timeSlot.endTime) : '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (reservation.status==='confirmed' ) { %>
+                                                            <span class="badge bg-success">Confirmada</span>
+                                                            <% } else if (reservation.status==='cancelled' ) { %>
+                                                                <span class="badge bg-secondary">Cancelada</span>
+                                                                <% } else if (reservation.status==='completed' ) { %>
+                                                                    <span class="badge bg-info">Completada</span>
+                                                                    <% } else { %>
+                                                                        <span class="badge bg-info">
+                                                                            <%= reservation.status %>
+                                                                        </span>
+                                                                        <% } %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <% if (reservation.status==='confirmed' ) { %>
+                                                            <form
+                                                                action="/admin/reservations/<%= reservation.id %>/status"
+                                                                method="POST" class="d-flex justify-content-center">
+                                                                <select name="status" class="form-select form-select-sm"
+                                                                    style="width:auto">
+                                                                    <option value="" disabled selected>Elegir acción...
+                                                                    </option>
+                                                                    <option value="cancelled">Cancelar</option>
+                                                                    <option value="completed">Forzar Completado</option>
+                                                                </select>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary btn-sm ms-2">Aplicar</button>
+                                                            </form>
+                                                            <% } else { %>
+                                                                <span class="text-muted small fw-bold">Bloqueada</span>
+                                                                <% } %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
                                                     <% } %>
-                                                </td>
-                                                <td class="text-center">
-                                                    <form action="/admin/reservations/<%= reservation.id %>/status" method="POST" class="d-flex justify-content-center">
-                                                        <select name="status" class="form-select form-select-sm" style="width:auto">
-                                                            <option value="confirmed" <%= reservation.status === 'confirmed' ? 'selected' : '' %>>Confirmada</option>
-                                                            <option value="cancelled" <%= reservation.status === 'cancelled' ? 'selected' : '' %>>Cancelada</option>
-                                                            <option value="completed" <%= reservation.status === 'completed' ? 'selected' : '' %>>Completada</option>
-                                                        </select>
-                                                        <button type="submit" class="btn btn-primary btn-sm ms-2">Cambiar</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        <% }) %>
-                                    <% } %>
                                 </tbody>
                             </table>
                         </div>
@@ -82,5 +95,3 @@
             </div>
         </div>
     </div>
-
-
