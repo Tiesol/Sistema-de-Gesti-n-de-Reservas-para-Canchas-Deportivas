@@ -17,6 +17,7 @@
                                     <tr>
                                         <th>Field Name</th>
                                         <th>Price / Hour</th>
+                                        <th>Field Type</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -28,6 +29,9 @@
                                             </td>
                                             <td>Bs.
                                                 <%= field.pricePerHour %>
+                                            </td>
+                                            <td>
+                                                <%= field.fieldType.name %>
                                             </td>
                                             <td class="text-center">
                                                 <% if (locals.userlog.role==='user' ) { %>

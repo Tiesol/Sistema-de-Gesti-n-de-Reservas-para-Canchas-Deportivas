@@ -1,6 +1,8 @@
 module.exports = (app, db) => {
     app.get('/admin/fields', async (req, res) => {
-        const fields = await db.Field.findAll();
+        const fields = await db.Field.findAll({
+            include: [{ model: db.FieldType, as: 'fieldType' }]
+        });
         res.render('fields/list-fields', { fields });
     });
 
@@ -17,13 +19,13 @@ module.exports = (app, db) => {
             name = name ? name.trim() : '';
             pricePerHour = pricePerHour ? parseFloat(pricePerHour) : null;
             fieldTypeId = fieldTypeId ? parseInt(fieldTypeId) : null;
-            
+
             if (!name || !pricePerHour || !fieldTypeId) {
                 const fieldTypes = await db.FieldType.findAll();
-                return res.render('admin/form-field', { 
-                    fieldTypes, 
+                return res.render('admin/form-field', {
+                    fieldTypes,
                     field: null,
-                    error: 'Todos los campos son obligatorios' 
+                    error: 'Todos los campos son obligatorios'
                 });
             }
 
@@ -53,7 +55,7 @@ module.exports = (app, db) => {
             const fieldTypes = await db.FieldType.findAll();
 
             if (field) {
-                res.render('admin/form-field', { fieldTypes, field});
+                res.render('admin/form-field', { fieldTypes, field });
             } else {
                 res.redirect('/admin/fields');
             }
@@ -65,7 +67,7 @@ module.exports = (app, db) => {
 
     app.post('/admin/fields/:id/edit', async (req, res) => {
         const { id } = req.params;
-        let { name, pricePerHour, fieldTypeId } = req.body;
+        let { name, pricePerHour, fieldTypeId, status } = req.body;
 
         try {
             name = name ? name.trim() : '';
@@ -75,10 +77,10 @@ module.exports = (app, db) => {
             if (!name || !pricePerHour || !fieldTypeId) {
                 const field = await db.Field.findByPk(id);
                 const fieldTypes = await db.FieldType.findAll();
-                return res.render('admin/form-field', { 
+                return res.render('admin/form-field', {
                     fieldTypes,
-                    field, 
-                    error: 'Todos los campos son obligatorios' 
+                    field,
+                    error: 'Todos los campos son obligatorios'
                 });
             }
 
@@ -87,6 +89,11 @@ module.exports = (app, db) => {
                 fieldToUpdate.name = name;
                 fieldToUpdate.pricePerHour = pricePerHour;
                 fieldToUpdate.fieldTypeId = fieldTypeId;
+
+                if (status === 'available' || status === 'unavailable') {
+                    fieldToUpdate.status = status;
+                }
+
                 await fieldToUpdate.save();
             }
 
@@ -98,16 +105,16 @@ module.exports = (app, db) => {
         }
     });
 
-        app.post('/admin/fields/:id/delete', async (req, res) => {
+    app.post('/admin/fields/:id/delete', async (req, res) => {
         const { id } = req.params;
 
         try {
             const field = await db.Field.findByPk(id);
-            
+
             if (field) {
                 await field.destroy();
             }
-            
+
             res.redirect('/admin/fields');
 
         } catch (error) {
@@ -121,13 +128,13 @@ module.exports = (app, db) => {
         try {
             const field = await db.Field.findByPk(id, {
                 include: [
-                    { 
-                        model: db.Review, 
-                        as: 'reviews', 
-                        include: [{ model: db.User, as: 'user', attributes: ['name'] }] 
+                    {
+                        model: db.Review,
+                        as: 'reviews',
+                        include: [{ model: db.User, as: 'user', attributes: ['name'] }]
                     }
                 ],
-                order: [[{ model: db.Review, as: 'reviews' }, 'createdAt', 'DESC']] // Las más nuevas primero
+                order: [[{ model: db.Review, as: 'reviews' }, 'createdAt', 'DESC']]
             });
 
             if (!field) {

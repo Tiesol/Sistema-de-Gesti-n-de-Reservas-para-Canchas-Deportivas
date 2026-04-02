@@ -97,11 +97,12 @@ module.exports = (app, db) => {
             const reservations = await db.Reservation.findAll({
                 where: { userId },
                 include: [
-                    { model: db.Review, as: 'review' }, 
+                    { model: db.Review, as: 'review' },
                     {
                         model: db.TimeSlot,
                         as: 'timeSlot',
-                        include: [{ model: db.Field, as: 'field', include: [{ model: db.FieldType, as: 'fieldType' }] }]
+                        include: [{ model: db.Field, as: 'field', 
+                        include: [{ model: db.FieldType, as: 'fieldType' }] }]
                     }
                 ],
                 order: [['createdAt', 'DESC']]

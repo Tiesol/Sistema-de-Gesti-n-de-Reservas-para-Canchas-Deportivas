@@ -18,7 +18,9 @@ module.exports = (app, db) => {
             if (!field) return res.redirect('/admin/fields');
 
             const timeSlots = await db.TimeSlot.findAll({ 
-                where: { fieldId: fieldId },
+                where: { fieldId: fieldId,
+                        isAvailable: true
+                 },
                 order: [
                     ['date', 'ASC'], 
                     ['startTime', 'ASC']

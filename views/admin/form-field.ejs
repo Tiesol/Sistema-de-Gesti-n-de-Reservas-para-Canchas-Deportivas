@@ -40,12 +40,24 @@
                                         </select>
                                     </div>
 
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <a href="/admin/fields" class="btn btn-secondary">Cancelar</a>
-                                        <button type="submit" class="btn btn-primary">
-                                            <%= field ? 'Guardar Cambios' : 'Crear Cancha' %>
-                                        </button>
-                                    </div>
+                                    <% if (field) { %>
+                                        <div class="mb-4">
+                                            <label class="form-label fw-bold">Estado de la Cancha</label>
+                                            <select class="form-select" name="status">
+                                                <option value="available" <%=field.status==='available' ? 'selected'
+                                                    : '' %>>Habilitada (Disponible)</option>
+                                                <option value="unavailable" <%=field.status==='unavailable' ? 'selected'
+                                                    : '' %>>Deshabilitada (En Mantenimiento)</option>
+                                            </select>
+                                        </div>
+                                        <% } %>
+
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                <a href="/admin/fields" class="btn btn-secondary">Cancelar</a>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <%= field ? 'Guardar Cambios' : 'Crear Cancha' %>
+                                                </button>
+                                            </div>
 
                                 </form>
                     </div>
